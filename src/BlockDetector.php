@@ -29,7 +29,7 @@ class BlockDetector {
             $timeDiff = microtime(true) - $time;
             $timeDiff *= 1000;
 
-            if ($timeDiff > $this->threshold) {
+            if ($timeDiff > $this->threshold && $this->watcher !== null) {
                 $callback = $this->callback;
                 $callback($timeDiff);
             }
