@@ -16,4 +16,4 @@ Once the loop runs, you can call `BlockDetector::start` to start the detection. 
 
 ## License
 
-MIT, see [`./LICENSE`](./LICENSE).
+[MIT](./LICENSE).
