@@ -1,0 +1,24 @@
+{
+    "name": "kelunik/loop-block",
+    "description": "Detect blocking ticks in event loops.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niklas Keller",
+            "email": "me@kelunik.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kelunik\\LoopBlock\\": "src"
+        }
+    },
+    "require": {
+        "async-interop/event-loop": "^0.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5",
+        "amphp/loop": "dev-master as 1.0.0"
+    }
+}
