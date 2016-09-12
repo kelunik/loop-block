@@ -8,30 +8,30 @@ use Interop\Async\Loop;
  * Detects blocking operations in loops.
  */
 class BlockDetector {
-    private $callback;
-    private $threshold;
-    private $interval;
+    private $onBlock;
+    private $blockThreshold;
+    private $checkInterval;
     private $watcher;
     private $measure;
     private $check;
 
     /**
-     * @param callable $callback Callback to be executed if one tick takes longer than $threshold milliseconds.
-     * @param int      $threshold Tick duration threshold in milliseconds.
-     * @param int      $interval Check interval, only check every $interval milliseconds one tick.
+     * @param callable $onBlock Callback to be executed if one tick takes longer than $threshold milliseconds.
+     * @param int $blockThreshold Tick duration threshold in milliseconds.
+     * @param int $checkInterval Check interval, only check every $interval milliseconds one tick.
      */
-    public function __construct(callable $callback, int $threshold = 10, int $interval = 500) {
-        $this->callback = $callback;
-        $this->threshold = $threshold;
-        $this->interval = $interval;
+    public function __construct(callable $onBlock, int $blockThreshold = 10, int $checkInterval = 500) {
+        $this->onBlock = $onBlock;
+        $this->blockThreshold = $blockThreshold;
+        $this->checkInterval = $checkInterval;
 
         $this->measure = function ($watcherId, $time) {
             $timeDiff = microtime(true) - $time;
             $timeDiff *= 1000;
 
-            if ($timeDiff > $this->threshold && $this->watcher !== null) {
-                $callback = $this->callback;
-                $callback($timeDiff);
+            if ($timeDiff > $this->blockThreshold && $this->watcher !== null) {
+                $onBlock = $this->onBlock;
+                $onBlock($timeDiff);
             }
         };
 
@@ -50,7 +50,7 @@ class BlockDetector {
             return;
         }
 
-        $this->watcher = Loop::repeat($this->interval, function () {
+        $this->watcher = Loop::repeat($this->checkInterval, function () {
             // Use double defer to calculate complete tick time
             // instead of timer → defer time.
             Loop::defer($this->check);
