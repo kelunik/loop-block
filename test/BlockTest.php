@@ -2,9 +2,14 @@
 
 namespace Kelunik\LoopBlock;
 
-use Interop\Async\Loop;
+use Amp\Loop;
+use Amp\PHPUnit\TestCase;
 
-class BlockTest extends \PHPUnit_Framework_TestCase {
+class BlockTest extends TestCase {
+    public function setUp() {
+        Loop::set(new Loop\EventDriver);
+    }
+
     /**
      * @param int $threshold Measure threshold.
      * @param int $interval Check interval.
@@ -20,7 +25,7 @@ class BlockTest extends \PHPUnit_Framework_TestCase {
             $callCount++;
         }, $threshold, $interval);
 
-        Loop::execute(function () use ($detector) {
+        Loop::run(function () use ($detector) {
             $detector->start();
 
             Loop::repeat(0, function () {
@@ -38,8 +43,8 @@ class BlockTest extends \PHPUnit_Framework_TestCase {
     public function provideArgs() {
         return [
             [10, 0, 2],
-            [100, 0, 2],
-            [200, 0, 1],
+            [90, 0, 2],
+            [110, 0, 0],
             [300, 0, 0],
         ];
     }

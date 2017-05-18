@@ -2,7 +2,7 @@
 
 namespace Kelunik\LoopBlock;
 
-use Interop\Async\Loop;
+use Amp\Loop;
 
 /**
  * Detects blocking operations in loops.
@@ -18,9 +18,9 @@ class BlockDetector {
     /**
      * @param callable $onBlock Callback to be executed if one tick takes longer than $threshold milliseconds.
      * @param int $blockThreshold Tick duration threshold in milliseconds.
-     * @param int $checkInterval Check interval, only check every $interval milliseconds one tick.
+     * @param int $checkInterval Check interval, only check one tick every $interval milliseconds.
      */
-    public function __construct(callable $onBlock, int $blockThreshold = 10, int $checkInterval = 500) {
+    public function __construct(callable $onBlock, int $blockThreshold, int $checkInterval) {
         $this->onBlock = $onBlock;
         $this->blockThreshold = $blockThreshold;
         $this->checkInterval = $checkInterval;
@@ -38,7 +38,7 @@ class BlockDetector {
         $this->check = function () {
             $time = microtime(1);
 
-            Loop::defer($this->measure, $time);
+            Loop::unreference(Loop::defer($this->measure, $time));
         };
     }
 
@@ -53,7 +53,7 @@ class BlockDetector {
         $this->watcher = Loop::repeat($this->checkInterval, function () {
             // Use double defer to calculate complete tick time
             // instead of timer → defer time.
-            Loop::defer($this->check);
+            Loop::unreference(Loop::defer($this->check));
         });
 
         Loop::unreference($this->watcher);

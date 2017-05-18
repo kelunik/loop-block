@@ -1,6 +1,6 @@
 {
     "name": "kelunik/loop-block",
-    "description": "Detect blocking ticks in event loops.",
+    "description": "Detect blocking ticks in the Amp event loop.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -15,10 +15,12 @@
         }
     },
     "require": {
-        "async-interop/event-loop": "^0.3.0"
+        "amphp/amp": "^2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.5",
-        "amphp/loop": "dev-master as 1.0.0"
-    }
+        "amphp/phpunit-util": "dev-master as 1.0.0",
+        "friendsofphp/php-cs-fixer": "^2.3",
+        "phpunit/phpunit": "^6"
+    },
+    "minimum-stability": "dev"
 }
