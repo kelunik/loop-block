@@ -20,6 +20,10 @@ install:
   - composer update -n --prefer-dist --ignore-platform-reqs
   - composer require satooshi/php-coveralls dev-master --ignore-platform-reqs
 
+  - vendor/amphp/amp/travis/install-uv.sh
+  - vendor/amphp/amp/travis/install-ev.sh
+  - vendor/amphp/amp/travis/install-event.sh
+
   - mkdir -p coverage/cov coverage/bin
   - wget https://phar.phpunit.de/phpcov.phar -O coverage/bin/phpcov
   - chmod +x coverage/bin/phpcov
