@@ -18,9 +18,8 @@
         "amphp/amp": "^2"
     },
     "require-dev": {
-        "amphp/phpunit-util": "dev-master as 1.0.0",
+        "amphp/phpunit-util": "^1",
         "friendsofphp/php-cs-fixer": "^2.3",
         "phpunit/phpunit": "^6"
-    },
-    "minimum-stability": "dev"
+    }
 }

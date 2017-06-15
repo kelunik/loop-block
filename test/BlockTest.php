@@ -7,7 +7,7 @@ use Amp\PHPUnit\TestCase;
 
 class BlockTest extends TestCase {
     public function setUp() {
-        Loop::set(new Loop\EventDriver);
+        Loop::set(new Loop\EvDriver());
     }
 
     /**
